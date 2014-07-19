@@ -8,10 +8,6 @@
  "webkitNotifications.requestPermission" beforehand).
  */
 function show() {
-  var time = /(..)(:..)/.exec(new Date());     // The prettyprinted time.
-  var hour = time[1] % 12 || 12;               // The prettyprinted hour.
-  var period = time[1] < 12 ? 'a.m.' : 'p.m.'; // The period of the day.
-
   notification =  new Notification('Title', {
     /* The notification's icon - For Chrome in Windows, Linux & Chrome OS */
     icon: '64.png',
@@ -23,6 +19,7 @@ function show() {
      */
     tag: 'tag'
   });
+  chrome.browserAction.setBadgeText({text: "3+"});
 }
 
 // Conditionally initialize the options.
