@@ -8,7 +8,9 @@
   },
   "permissions": [
     "notifications",
-    "tabs"
+    "tabs",
+    "http://*/",
+    "https://*/"
   ],
   "options_page": "options.html",
   "background": {
@@ -19,7 +21,7 @@
     "default_icon": "64.png"
   },
 
-  // crbug.com/134315
+// crbug.com/134315
   "web_accessible_resources": [
     "64.png"
   ]
