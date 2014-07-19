@@ -8,7 +8,7 @@
  "webkitNotifications.requestPermission" beforehand).
  */
 function show() {
-  notification =  new Notification('Title', {
+  notification = new Notification('Title', {
     /* The notification's icon - For Chrome in Windows, Linux & Chrome OS */
     icon: '64.png',
     /* The notification’s subtitle. */
@@ -50,7 +50,7 @@ setInterval(function () {
 
 
 // Called when the user clicks on the browser action.
-chrome.browserAction.onClicked.addListener(function(tab) {
-  var action_url = "http://www.reddit.com/submit?url=" + encodeURIComponent(tab.href) + '&title=' + encodeURIComponent(tab.title);
-  chrome.tabs.create({ url: action_url });
+chrome.browserAction.onClicked.addListener(function (tab) {
+  console.log(localStorage.stashUrl);
+  chrome.tabs.create({ url: localStorage.stashUrl });
 });

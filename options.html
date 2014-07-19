@@ -9,33 +9,42 @@
 -->
 <!doctype html>
 <html>
-  <head>
+<head>
     <title>Notification Demo</title>
     <link href="style.css" rel="stylesheet" type="text/css">
     <script src="options.js"></script>
-  </head>
-  <body>
-    <h1>
-      <img src="64.png" alt="Pull Request">
-      Notification Demo
-    </h1>
-    <h2>Options</h2>
-    <form id="options">
-      <input type="checkbox" name="isActivated" checked>
-      Display a notification every
-      <select name="frequency">
-        <option>1</option>
-        <option>2</option>
-        <option>3</option>
-        <option>4</option>
-        <option>5</option>
-        <option>10</option>
-        <option>15</option>
-        <option>20</option>
-        <option>25</option>
-        <option>30</option>
-      </select>
-      minute(s).
-    </form>
-  </body>
+</head>
+<body>
+<h1>
+    <img src="64.png" alt="Pull Request">
+    Notification Demo
+</h1>
+
+<h2>Options</h2>
+
+<form id="options">
+    <div name="notification">
+        <input type="checkbox" name="isActivated" checked>
+        Display a notification every
+        <select name="frequency">
+            <option>10</option>
+            <option>20</option>
+            <option>30</option>
+            <option>50</option>
+            <option>80</option>
+            <option>130</option>
+            <option>210</option>
+            <option>340</option>
+            <option>550</option>
+            <option>890</option>
+        </select>
+        seconds.
+    </div>
+    <div>
+        Stash URL
+        <input type="text" name="stashUrl">
+
+    </div>
+</form>
+</body>
 </html>

@@ -7,7 +7,7 @@
   field.
 */
 function ghost(isDeactivated) {
-  options.style.color = isDeactivated ? 'graytext' : 'black';
+  options.notification.style.color = isDeactivated ? 'graytext' : 'black';
                                               // The label color.
   options.frequency.disabled = isDeactivated; // The control manipulability.
 }
@@ -17,7 +17,7 @@ window.addEventListener('load', function() {
   options.isActivated.checked = JSON.parse(localStorage.isActivated);
                                          // The display activation.
   options.frequency.value = localStorage.frequency;
-                                         // The display frequency, in minutes.
+  options.stashUrl.value = localStorage.stashUrl;
 
   if (!options.isActivated.checked) { ghost(true); }
 
@@ -29,11 +29,11 @@ window.addEventListener('load', function() {
 
   options.frequency.onchange = function() {
     localStorage.frequency = options.frequency.value;
+    localStorage.stashUrl = options.stashUrl.value;
   };
-});
 
-chrome.browserAction.onClicked.addListener(function(tab) {
-  chrome.tabs.create({'url': chrome.extension.getURL('f.html')}, function(tab) {
-    // Tab opened.
-  });
+  options.stashUrl.onchange = function() {
+    localStorage.frequency = options.frequency.value;
+    localStorage.stashUrl = options.stashUrl.value;
+  };
 });
