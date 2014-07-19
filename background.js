@@ -1,14 +1,4 @@
-// Copyright (c) 2011 The Chromium Authors. All rights reserved.
-// Use of this source code is governed by a BSD-style license that can be
-// found in the LICENSE file.
-
-/*
- Displays a notification with the current time. Requires "notifications"
- permission in the manifest file (or calling
- "webkitNotifications.requestPermission" beforehand).
- */
 function show() {
-
   var xhr = new XMLHttpRequest();
   xhr.open("GET", localStorage.stashUrl, true);
   xhr.onreadystatechange = function () {
@@ -23,29 +13,17 @@ function show() {
       }
 
       notification = new Notification(resp.title, {
-        /* The notification's icon - For Chrome in Windows, Linux & Chrome OS */
         icon: '64.png',
-        /* The notification’s subtitle. */
         body: resp.body,
-        /*
-         The notification’s unique identifier.
-         This prevents duplicate entries from appearing if the user has multiple instances of your website open at once.
-         */
-        tag: 'tag'
+        tag: 'stash_notifier'
       });
 
       chrome.browserAction.setBadgeText({text: resp.size.toString(10)});
     } else if (xhr.readyState == 4) {
       notification = new Notification('Unable to connect', {
-        /* The notification's icon - For Chrome in Windows, Linux & Chrome OS */
         icon: '64.png',
-        /* The notification’s subtitle. */
         body: 'Something went wrong',
-        /*
-         The notification’s unique identifier.
-         This prevents duplicate entries from appearing if the user has multiple instances of your website open at once.
-         */
-        tag: 'tag_fail'
+        tag: 'stash_notifier_fail'
       });
       chrome.browserAction.setBadgeText({text: 'Error'});
     }
