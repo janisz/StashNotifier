@@ -12,9 +12,9 @@ function show() {
         return;
       }
 
-      notification = new Notification(resp.title, {
+      notification = new Notification('Pull Request', {
         icon: '64.png',
-        body: resp.body,
+        body: resp.values[0].title,
         tag: 'stash_notifier'
       });
 
