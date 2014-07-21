@@ -1,6 +1,7 @@
 function show() {
   var xhr = new XMLHttpRequest();
-  xhr.open("GET", localStorage.stashUrl, true);
+    var pullRequests = '/rest/inbox/latest/pull-requests?role=reviewer&start=0&limit=10&avatarSize=64&state=OPEN&order=oldest';
+  xhr.open("GET", localStorage.stashUrl + pullRequests, true);
   xhr.onreadystatechange = function () {
     console.log(xhr);
     if (xhr.readyState == 4 && xhr.status == 200) {
