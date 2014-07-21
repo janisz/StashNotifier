@@ -1,34 +1,39 @@
-function show() {
-  var xhr = new XMLHttpRequest();
-    var pullRequests = '/rest/inbox/latest/pull-requests?role=reviewer&start=0&limit=10&avatarSize=64&state=OPEN&order=oldest';
-  xhr.open("GET", localStorage.stashUrl + pullRequests, true);
-  xhr.onreadystatechange = function () {
-    console.log(xhr);
+function createErrorNotification() {
+  return new Notification('Unable to connect', {
+    icon: '64.png',
+    body: 'Something went wrong',
+    tag: 'stash_notifier_fail'
+  });
+}
+
+function createPullRequestNotification(pullRequest) {
+  return new Notification(pullRequest.author.user.displayName, {
+    icon: pullRequest.author.user.avatarUrl.split("?")[0],
+    body: pullRequest.title,
+    tag: 'stash_notifier_' + pullRequest.fromRef.latestChangeset
+  }).onclick = function () {
+    window.open(pullRequest.links.self[0].href)
+  };
+}
+
+function processStashResponse(xhr) {
+  return function () {
     if (xhr.readyState == 4 && xhr.status == 200) {
-      // JSON.parse does not evaluate the attacker's scripts.
-      console.log(xhr.responseText);
       var resp = JSON.parse(xhr.responseText);
-      if (resp.size == 0) {
-        chrome.browserAction.setBadgeText({text: ''});
-        return;
-      }
-
-      notification = new Notification('Pull Request', {
-        icon: '64.png',
-        body: resp.values[0].title,
-        tag: 'stash_notifier'
-      });
-
-      chrome.browserAction.setBadgeText({text: resp.size.toString(10)});
+      chrome.browserAction.setBadgeText({text: resp.size === 0 ? '' : resp.size.toString(10)});
+      resp.values.forEach(createPullRequestNotification);
     } else if (xhr.readyState == 4) {
-      notification = new Notification('Unable to connect', {
-        icon: '64.png',
-        body: 'Something went wrong',
-        tag: 'stash_notifier_fail'
-      });
+      createErrorNotification();
       chrome.browserAction.setBadgeText({text: 'Error'});
     }
   };
+}
+
+function show() {
+  var xhr = new XMLHttpRequest();
+  var pullRequests = '/rest/inbox/latest/pull-requests?role=reviewer&start=0&limit=10&avatarSize=64&state=OPEN&order=oldest';
+  xhr.open("GET", localStorage.stashUrl + pullRequests, true);
+  xhr.onreadystatechange = processStashResponse(xhr);
   xhr.send();
 }
 
@@ -44,15 +49,11 @@ if (JSON.parse(localStorage.isActivated)) {
   show();
 }
 
-var interval = 0; // The display interval, in minutes.
+var interval = 0; // The display interval, in seconds.
 
 setInterval(function () {
   interval++;
-
-  if (
-    JSON.parse(localStorage.isActivated) &&
-    localStorage.frequency <= interval
-    ) {
+  if (JSON.parse(localStorage.isActivated) && localStorage.frequency <= interval) {
     show();
     interval = 0;
   }
@@ -61,6 +62,5 @@ setInterval(function () {
 
 // Called when the user clicks on the browser action.
 chrome.browserAction.onClicked.addListener(function (tab) {
-  console.log(localStorage.stashUrl);
   chrome.tabs.create({ url: localStorage.stashUrl });
 });
