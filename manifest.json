@@ -19,10 +19,5 @@
   "manifest_version": 2,
   "browser_action": {
     "default_icon": "128.png"
-  },
-
-// crbug.com/134315
-  "web_accessible_resources": [
-    "128.png"
-  ]
+  }
 }
