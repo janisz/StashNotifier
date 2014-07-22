@@ -3,8 +3,8 @@
   "version": "0.1",
   "description": "Displays the number of unreviewed pull requests. You can also click the button to open Stash.",
   "icons": {
-    "64": "64.png",
-    "128": "128.png"
+    "128": "128.png",
+    "48": "48.png"
   },
   "permissions": [
     "notifications",
@@ -18,11 +18,11 @@
   },
   "manifest_version": 2,
   "browser_action": {
-    "default_icon": "64.png"
+    "default_icon": "128.png"
   },
 
 // crbug.com/134315
   "web_accessible_resources": [
-    "64.png"
+    "128.png"
   ]
 }

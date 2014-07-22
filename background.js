@@ -1,6 +1,6 @@
 function createErrorNotification() {
   return new Notification('Unable to connect', {
-    icon: '64.png',
+    icon: '128.png',
     body: 'Something went wrong',
     tag: 'stash_notifier_fail'
   });

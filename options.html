@@ -7,25 +7,26 @@
 
   An option page for configuring notifications.
 -->
-<!doctype html>
 <html>
 <head>
-    <title>Notification Demo</title>
+    <title>Stash Notifier</title>
     <link href="style.css" rel="stylesheet" type="text/css">
-    <script src="options.js"></script>
 </head>
 <body>
 <h1>
-    <img src="64.png" alt="Pull Request">
-    Notification Demo
+    <img src="48.png" alt="Pull Request">
+    Stash Notifier
 </h1>
 
 <h2>Options</h2>
 
 <form id="options">
-    <div name="notification">
+    <div>
         <input type="checkbox" name="isActivated" checked>
-        Display a notification every
+        Enable notification
+    </div>
+    <div>
+        Pull interval
         <select name="frequency">
             <option>10</option>
             <option>20</option>
@@ -46,5 +47,6 @@
 
     </div>
 </form>
+<script src="options.js"></script>
 </body>
 </html>
