@@ -6,40 +6,59 @@ var button = buttons.ActionButton({
   label: "Stash",
   icon: {
     "32": "./48.png",
-    "128": "./48.png"
+    "128": "./128.png"
   },
   onClick: handleClick
 });
 
 
+var notifications = require("sdk/notifications");
+var self = require("sdk/self");
+function createErrorNotification() {
+  notifications.notify({title: 'Unable to connect',
+    iconURL: self.data.url('128.png'),
+    text: 'Something went wrong',
+    data: require('sdk/simple-prefs').prefs['stashUrl'],
+    onClick: function (url) { tabs.open(url); }
+  });
+}
+
 function createPullRequestNotification(pullRequest) {
-  return new Notification(pullRequest.author.user.displayName, {
-    icon: pullRequest.author.user.avatarUrl.split("?")[0],
-    body: pullRequest.title,
-    tag: 'stash_notifier_' + pullRequest.fromRef.latestChangeset
-  }).onclick = function () {
-    window.open(pullRequest.links.self[0].href)
-  };
+  notifications.notify({title: pullRequest.author.user.displayName,
+    iconURL: pullRequest.author.user.avatarUrl.split("?")[0],
+    text: pullRequest.title,
+    data: pullRequest.links.self[0].href,
+    tag: 'stash_notifier_' + pullRequest.fromRef.latestChangeset,
+    onClick: function (url) { tabs.open(url); }
+  })
+}
+
+var Request = require("sdk/request").Request;
+function show() {
+  var pullRequests = '/rest/inbox/latest/pull-requests?role=reviewer&start=0&limit=10&avatarSize=64&state=OPEN&order=oldest';
+  Request({
+    url: require('sdk/simple-prefs').prefs['stashUrl'] + pullRequests,
+    onComplete: function (response) {
+      console.log(response);
+      if (response.status === 200 && response.json) {
+        response.json.values.forEach(createPullRequestNotification);
+      } else {
+        createErrorNotification();
+      }
+    }
+  }).get();
 }
 
 function handleClick(state) {
-//  createPullRequestNotification({author : { user : {displayName : "Yoda", avatarUrl : "https://s3.amazonaws.com/ksr/avatars/1488070/Yoda.small.jpg?1365456091"}}, title : "Add missing dependency to Force.js", fromRef : {latestChangeset : 112}})
-  tabs.open("http://www.mozilla.org/");
+  tabs.open(require('sdk/simple-prefs').prefs['stashUrl']);
 }
 
 var timers = require("sdk/timers");
-var notifications = require("sdk/notifications")
-
-var i=0;
+var interval=0;
 var timerId = timers.setInterval(function() {
-  notifications.notify({
-    title: "Jabberwocky",
-    text: "'Twas brillig, and the slithy toves",
-    data: "did gyre and gimble in the wabe",
-    onClick: function (data) {
-      console.log(data);
-      // console.log(this.data) would produce the same result.
-    }
-  });
-  if (i>4) timers.clearInterval(timerId);
-}, 5000);
+  interval++;
+  if (interval>require('sdk/simple-prefs').prefs['frequency']) {
+    show();
+    interval = 0;
+  }
+}, 1000);

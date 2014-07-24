@@ -7,20 +7,21 @@
   "license": "MIT",
   "version": "0.0.1",
   "permissions": {
-    "desktop-notification":{}
+    "desktop-notification":{},
+    "cross-domain-content": ["https://*/", "https://*/"]
   },
   "preferences": [{
-    "name": "somePreference",
-    "title": "Some preference title",
-    "description": "Some short description for the preference",
+    "name": "stashUrl",
+    "title": "Stash URL",
+    "description": "Your comapny stash location",
     "type": "string",
-    "value": "this is the default string value"
+    "value": "http://stash.com"
   },
     {
-      "description": "How many of them we have.",
-      "name": "myInteger",
+      "description": "How often should pull Stash",
+      "name": "frequency",
       "type": "integer",
-      "value": 8,
-      "title": "How Many?"
+      "value": 10,
+      "title": "Pull interval"
     }]
 }
