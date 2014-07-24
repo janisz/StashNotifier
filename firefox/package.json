@@ -1,0 +1,9 @@
+{
+  "name": "stash-notifier",
+  "title": "Stash Notifier",
+  "id": "jid1-ZJJfew6aYL5bug",
+  "description": "Displays the number of unreviewed pull requests. You can also click the button to open Stash.",
+  "author": "Janisz",
+  "license": "MIT",
+  "version": "0.0.1"
+}
