@@ -5,5 +5,22 @@
   "description": "Displays the number of unreviewed pull requests. You can also click the button to open Stash.",
   "author": "Janisz",
   "license": "MIT",
-  "version": "0.0.1"
+  "version": "0.0.1",
+  "permissions": {
+    "desktop-notification":{}
+  },
+  "preferences": [{
+    "name": "somePreference",
+    "title": "Some preference title",
+    "description": "Some short description for the preference",
+    "type": "string",
+    "value": "this is the default string value"
+  },
+    {
+      "description": "How many of them we have.",
+      "name": "myInteger",
+      "type": "integer",
+      "value": 8,
+      "title": "How Many?"
+    }]
 }
