@@ -1,10 +1,16 @@
-var widgets = require("sdk/widget");
+var buttons = require('sdk/ui/button/action');
 var tabs = require("sdk/tabs");
-var widget = widgets.Widget({
-  id: "mozilla-link",
-  label: "Mozilla website",
-  contentURL: require("sdk/self").data.url("48.png"),
-  onClick: function() {
-    tabs.open("http://developer.mozilla.org/");
-  }
+
+var button = buttons.ActionButton({
+  id: "stash-link",
+  label: "Stash",
+  icon: {
+    "32": "./48.png",
+    "128": "./48.png"
+  },
+  onClick: handleClick
 });
+
+function handleClick(state) {
+  tabs.open("http://www.mozilla.org/");
+}
