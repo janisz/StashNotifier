@@ -3,9 +3,10 @@
 
 # Installation
  1. Checkout code `git clone https://github.com/janisz/StashNotifier.git`
- 2. Go to [Firefox Add-ons](http://www.accessfirefox.org/Install_Addon_Manually.php) and load extension from (`./firefox/stash-notifier.xpi`)
+ 2. Go to [Firefox Add-ons](https://support.mozilla.org/en-US/kb/unable-install-add-ons-or-extensions#w_you-are-asked-to-download-the-add-on-rather-than-installing-it) and load extension from
+ ([`./firefox/stash-notifier.xpi`](https://github.com/janisz/StashNotifier/raw/firefox/firefox/stash-notifier.xpi))
  3. Open StashNotifier Preferences and edit it to meet your configuration
- 4. Wait until you get new pull request :)
+ 4. Wait until you get new pull request :smile:
  
 
 # License
