@@ -12,19 +12,38 @@ function createPullRequestNotification(pullRequest) {
     body: pullRequest.title,
     tag: 'stash_notifier_' + pullRequest.fromRef.latestChangeset
   }).onclick = function () {
-    window.open(pullRequest.links.self[0].href)
+    window.open(pullRequest.links.self[0].href);
   };
+}
+
+function shouldShowNotification() {
+  return localStorage.isActivated === 'true';
+}
+function handleError() {
+  chrome.browserAction.setBadgeText({text: 'Error'});
+  if (shouldShowNotification()) {
+    createErrorNotification();
+  }
 }
 
 function processStashResponse(xhr) {
   return function () {
     if (xhr.readyState == 4 && xhr.status == 200) {
-      var resp = JSON.parse(xhr.responseText);
-      chrome.browserAction.setBadgeText({text: resp.size === 0 ? '' : resp.size.toString(10)});
-      resp.values.forEach(createPullRequestNotification);
+      try {
+        var resp = JSON.parse(xhr.responseText);
+        chrome.browserAction.setBadgeText({text: resp.size === 0 ? '' : resp.size.toString(10)});
+        if (shouldShowNotification()) {
+          resp.values.forEach(createPullRequestNotification);
+        }
+      } catch (e) {
+        console.error(e);
+        chrome.browserAction.setBadgeText({text: 'Error'});
+        if (shouldShowNotification()) {
+          createErrorNotification();
+        }
+      }
     } else if (xhr.readyState == 4) {
-      createErrorNotification();
-      chrome.browserAction.setBadgeText({text: 'Error'});
+      handleError();
     }
   };
 }
@@ -40,7 +59,7 @@ function show() {
 // Conditionally initialize the options.
 if (!localStorage.isInitialized) {
   localStorage.isActivated = true;   // The display activation.
-  localStorage.frequency = 1;        // The display frequency, in minutes.
+  localStorage.frequency = 10;
   localStorage.isInitialized = true; // The option initialization.
 }
 
@@ -53,7 +72,7 @@ var interval = 0; // The display interval, in seconds.
 
 setInterval(function () {
   interval++;
-  if (JSON.parse(localStorage.isActivated) && localStorage.frequency <= interval) {
+  if (localStorage.frequency <= interval) {
     show();
     interval = 0;
   }
@@ -63,4 +82,5 @@ setInterval(function () {
 // Called when the user clicks on the browser action.
 chrome.browserAction.onClicked.addListener(function (tab) {
   chrome.tabs.create({ url: localStorage.stashUrl });
+  show();
 });

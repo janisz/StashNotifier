@@ -1,7 +1,8 @@
 {
   "name": "Stash Notifier",
-  "version": "0.1",
+  "short_name": "Stash Notifier",
   "description": "Displays the number of unreviewed pull requests. You can also click the button to open Stash.",
+  "version": "0.1.1",
   "icons": {
     "128": "128.png",
     "48": "48.png"
@@ -19,5 +20,7 @@
   "manifest_version": 2,
   "browser_action": {
     "default_icon": "128.png"
-  }
+  },
+  "homepage_url": "http://janisz.github.io/StashNotifier/",
+  "offline_enabled": false
 }
