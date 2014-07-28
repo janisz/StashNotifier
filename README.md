@@ -1,4 +1,4 @@
-![](https://raw.githubusercontent.com/janisz/StashNotifier/master/64.png) STASH Notifier
+![](https://raw.githubusercontent.com/janisz/StashNotifier/master/48.png) STASH Notifier
 ====================
 
 # Installation
