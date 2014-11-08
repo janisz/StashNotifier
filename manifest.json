@@ -2,7 +2,7 @@
   "name": "Stash Notifier",
   "short_name": "Stash Notifier",
   "description": "Displays the number of unreviewed pull requests. You can also click the button to open Stash.",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "omnibox": { "keyword" : "stash" },
   "icons": {
     "128": "128.png",
