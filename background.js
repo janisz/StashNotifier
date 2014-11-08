@@ -1,18 +1,15 @@
-function createErrorNotification() {
-  return new Notification('Unable to connect', {
-    icon: '128.png',
-    body: 'Something went wrong',
-    tag: 'stash_notifier_fail'
-  });
-}
-
 function createPullRequestNotification(pullRequest) {
+  console.log(pullRequest, openedNotifications);
+  if (openedNotifications.indexOf('stash_notifier_' + pullRequest.fromRef.latestChangeset) !== -1) {
+    return null;
+  }
   return new Notification(pullRequest.author.user.displayName, {
     icon: pullRequest.author.user.avatarUrl.split("?")[0],
     body: pullRequest.title,
     tag: 'stash_notifier_' + pullRequest.fromRef.latestChangeset
   }).onclick = function () {
     window.open(pullRequest.links.self[0].href);
+    openedNotifications.push('stash_notifier_' + pullRequest.fromRef.latestChangeset)
   };
 }
 
@@ -20,10 +17,9 @@ function shouldShowNotification() {
   return localStorage.isActivated === 'true';
 }
 function handleError() {
-  chrome.browserAction.setBadgeText({text: 'Error'});
-  if (shouldShowNotification()) {
-    createErrorNotification();
-  }
+  chrome.browserAction.setBadgeText({text: '!'});
+  chrome.browserAction.setBadgeBackgroundColor ({color: '#FF9900'});
+  chrome.browserAction.setIcon({path: '/128_offline.png'});
 }
 
 function processStashResponse(xhr) {
@@ -31,16 +27,14 @@ function processStashResponse(xhr) {
     if (xhr.readyState == 4 && xhr.status == 200) {
       try {
         var resp = JSON.parse(xhr.responseText);
+        chrome.browserAction.setIcon({path: '/128.png'});
         chrome.browserAction.setBadgeText({text: resp.size === 0 ? '' : resp.size.toString(10)});
         if (shouldShowNotification()) {
           resp.values.forEach(createPullRequestNotification);
         }
       } catch (e) {
         console.error(e);
-        chrome.browserAction.setBadgeText({text: 'Error'});
-        if (shouldShowNotification()) {
-          createErrorNotification();
-        }
+        handleError();
       }
     } else if (xhr.readyState == 4) {
       handleError();
@@ -69,6 +63,7 @@ if (JSON.parse(localStorage.isActivated)) {
 }
 
 var interval = 0; // The display interval, in seconds.
+var openedNotifications = [];
 
 setInterval(function () {
   interval++;
@@ -190,4 +185,4 @@ var levDist = function(s, t) {
 
   // Step 7
   return d[n][m];
-}
+};
