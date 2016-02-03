@@ -1,16 +1,22 @@
 function createPullRequestNotification(pullRequest) {
   console.log(pullRequest, openedNotifications);
-  if (openedNotifications.indexOf('stash_notifier_' + pullRequest.fromRef.latestChangeset) !== -1) {
+  var notificationTag = 'stash_notifier_' + pullRequest.fromRef.latestChangeset
+  if (openedNotifications.indexOf(notificationTag) !== -1) {
     return null;
   }
-  return new Notification(pullRequest.author.user.displayName, {
+  notification = new Notification(pullRequest.author.user.displayName, {
     icon: pullRequest.author.user.avatarUrl.split("?")[0],
     body: pullRequest.title,
-    tag: 'stash_notifier_' + pullRequest.fromRef.latestChangeset
-  }).onclick = function () {
+    tag: notificationTag
+  });
+  notification.onclick = function () {
     window.open(pullRequest.links.self[0].href);
-    openedNotifications.push('stash_notifier_' + pullRequest.fromRef.latestChangeset)
+    openedNotifications.push(notificationTag)
   };
+  notification.onclose = function () {
+    openedNotifications.push(notificationTag)
+  };
+  return notification
 }
 
 function shouldShowNotification() {
