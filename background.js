@@ -50,7 +50,7 @@ function processStashResponse(xhr) {
 
 function show() {
   var xhr = new XMLHttpRequest();
-  var pullRequests = '/rest/inbox/latest/pull-requests?role=reviewer&start=0&limit=10&avatarSize=64&state=OPEN&order=oldest';
+  var pullRequests = '/rest/api/latest/inbox/pull-requests?role=reviewer&start=0&limit=100&avatarSize=64&withAttributes=true&state=OPEN&order=oldest';
   xhr.open("GET", localStorage.stashUrl + pullRequests, true);
   xhr.onreadystatechange = processStashResponse(xhr);
   xhr.send();
